@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIPG/wAIPG Token Bridge</title>
+    <link rel="icon" href="/images/AIPG.png">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/client.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #707E84;
+        }
+        h1, h2 {
+            color: #B2C8D1;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #F29843;
+        }
+        input, button {
+            padding: 10px;
+            margin: 20px auto;
+            box-sizing: border-box; /* Includes padding and border in element's width/height */
+            text-align: center;
+            border-radius: 20px;
+        }
+        input {
+            background-color: #C9D7DD;
+            color: #CCA336;
+            width: 40%;
+        }
+        button {
+            width: 20%;
+            margin: 20px auto;
+            background-color: #F29843;
+            color: #728086;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #D1833A;
+        }
+        div {
+            background-color: #444F54;
+            padding: 20px;
+            margin: 20px auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .picDiv {
+            padding: 10px;
+            margin: 20px auto;
+            gap: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: none;
+            box-shadow: none;
+            width: 80%;
+        }
+        #headerButtonDiv {
+            background-color: transparent;
+            color: #FBC843;
+            padding: 10px;
+            width: 80%;
+            margin: 10px auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: none;
+            box-shadow: none;
+        }
+        #headerButtonDiv button{
+            width: 40%;
+        }
+        #primaryHeaderDiv {
+            background-color: #444F54;
+            color: #F29843;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 50%;
+            margin: auto;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        #headerDiv {
+            background-color: #444F54;
+            color: #F29843;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 50%;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        #wrapDiv {
+            background-color: #444F54;
+            color: #F29843;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 60%;
+            margin: 20px auto;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        #unwrapDiv {
+            background-color: #444F54;
+            padding: 10px;
+            color: #F29843;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 60%;
+            margin: 20px auto;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        #output {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #D1833A;
+            font-weight: bold;
+            width: 80%;
+        }
+        #output p {
+            color: #D1833A;
+            font-size: 16px;
+            line-height: 1.5;
+            text-align: left;
+            background-color: #C9D7DD;
+            padding: 10px; /* Padding inside the paragraph */
+            border-radius: 5px; /* Rounded corners for the paragraphs */
+            margin: 10px 0; /* Top and bottom margins */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow for a bit of depth */
+        }
+    </style>
+</head>
+<body>
+    <div id="primaryHeaderDiv">
+        <h1>wAIPG/AIPG Token Bridge</h1>
+        <div class="picDiv">
+          <img src="/images/AIPG.png" alt="AI Power Grid Logo">
+          <img src="/images/Cycle.png" alt="Rotational Cycle">
+          <img src="/images/ETH.png" alt="Ethereum Logo">
+        </div>
+    <p>Thank you for utilizing our AIPG/wAIPG Token Bridge!</p>
+    </div>
+    <div id="headerDiv">
+        <h1>wAIPG/AIPG Token Bridge</h1>
+        <div class="picDiv">
+          <img src="/images/AIPG.png" alt="AI Power Grid Logo">
+          <img src="/images/Cycle.png" alt="Rotational Cycle">
+          <img src="/images/ETH.png" alt="Ethereum Logo">
+        </div>
+        <p>Welcome to the AIPG/wAIPG Token Bridge!</p>
+        <p>Use this interface to wrap or unwrap your tokens securely!</p>
+        <p>Please choose one of two options below to begin your journey across the bridge:</p>
+        <div id="headerButtonDiv">
+            <button id="headerMintButton">Begin Wrapping AIPG</button>
+            <button id="headerBurnButton">Begin Unwrapping wAIPG</button>
+        </div>
+    </div>
+    <div id="wrapDiv">
+        <h2>Wrap (Mint) AIPG into wAIPG</h2>
+        <div class="picDiv">
+          <img src="/images/AIPG.png" alt="AI Power Grid Logo">
+          <img src="/images/Wrap.png" alt="Arrow pointing from AIPG to ETH">
+          <img src="/images/ETH.png" alt="Ethereum Logo">
+        </div>
+        <label for="aipgAmount">Enter AIPG amount to deposit:</label>
+        <input type="text" id="aipgAmount" placeholder="Amount of AIPG">
+        <label for="userEthAddressMint">Enter your Ethereum address:</label>
+        <input type="text" id="userEthAddressMint" placeholder="Ethereum Address">
+        <button id="mintButton">Wrap AIPG</button>
+    </div>
+    <div id="unwrapDiv">
+        <h2>Unwrap (Burn) wAIPG into AIPG</h2>
+        <div class="picDiv">
+          <img src="/images/ETH.png" alt="AI Power Grid Logo">
+          <img src="/images/Wrap.png" alt="Arrow pointing towards AIPG away from ETH.">
+          <img src="/images/AIPG.png" alt="Ethereum Logo">
+        </div>
+        <label for="wAIPGAmount">Enter wAIPG amount to unwrap (burn):</label>
+        <input type="text" id="wAIPGAmount" placeholder="Amount of wAIPG in wei">
+        <label for="userEthAddressBurn">Enter your Ethereum address:</label>
+        <input type="text" id="userEthAddressBurn" placeholder="Ethereum Address">
+        <label for="userAIPGHoldingAddress">Enter your AIPG Holding address that you sent your coins to during the mint process:</label>
+        <input type="text" id="userAIPGHoldingAddress" placeholder="AIPG Holding Address">
+        <label for="userAIPGReceivingAddress">Enter your AIPG Receiving address on your walet that you want to receive your coins at during this burn process:</label>
+        <input type="text" id="userAIPGReceivingAddress" placeholder="AIPG Receiving Address">
+        <label for="userTxHash"><strong>This step can be a bit tricky, so read carefully!</strong><br><br>Send the amount of wAIPG you specify above, from your user Ethereum address specified above, to the Admin Ethereum Address:<br>(Insert_Address_Here)<br><br>Once this is done, then input the resulting hexidecimal transaction hash of that transaction between yourself and the admin for the specified amount:</label>
+        <input type="text" id="userTxHash" placeholder="Transaction Hash of wAIPG From User To Admin">
+        <button id="burnButton">Unwrap wAIPG</button>
+    </div>
+    <div id="output">
+        <h2>Be Patient And Follow Along With These Prompts, They Will Guide You Across The Bridge...</h2>
+    </div>
+</body>
+</html>

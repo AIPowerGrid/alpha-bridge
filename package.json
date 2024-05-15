@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.1",
+    "@ravenrebels/ravencoin-rpc": "^0.3.3",
+    "bignumber.js": "^9.1.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "fs": "^0.0.1-security",
+    "socket.io": "^4.7.5",
+    "web3": "^4.7.0"
+  }
+}
